@@ -1,4 +1,4 @@
-#include "Quad.h"
+#include "Quad.hpp"
 
 Quad::Quad(const int DIM)
 {
@@ -46,5 +46,70 @@ void Quad::read_GL_quad_1D()
 		gl_quad_x_1D.insert(std::make_pair(num, quad_x));
 		gl_quad_w_1D.insert(std::make_pair(num, quad_w));
 	}
-
 }
+
+/**
+* @brief linear map, map each point x in range [xrange[0],xrange[1]] to t in range 
+* [trange[0],trange[1]]
+*
+* @param[in] x x in range [xrange[0],xrange[1]]
+* @param xrange the range of x
+* @param trange the range of t
+*
+* @return t in range [trange[0], trange[1]]
+*/
+double Quad::linear_map(const double x, const std::vector<double> & xrange, const std::vector<double> & trange)
+{
+	double xl= xrange[0], xr=xrange[1];
+	double tl=trange[0],  tr=trange[1];
+
+	return (x-xl)/(xr-xl)*(tr-tl)+tl;
+}
+
+/**
+ * @brief      linear map, map each point x in range [ xl, xr ] to t in range [ tl, tr ]
+ *
+ * @param[in]  x
+ * @param[in]  xl    left end for range x
+ * @param[in]  xr    right end for range x
+ * @param[in]  tl    left end for range t
+ * @param[in]  tr    right end for range t
+ *
+ * @return     t in range [ tl, tr ]
+ *
+ * @note       This is a overload version of linear_map( double x, std::vector<double> & xrange, std::vector<double> & trange )
+ */
+double Quad::linear_map(const double x, const double xl, const double xr, const double tl, const double tr) {
+
+	return (x - xl) / (xr - xl)*(tr - tl) + tl;;
+}
+
+/** 
+ * @brief Calculates integral of a function in 1D using Gauss-Legendre quadrature rule
+ *
+ * @param[in] func The function
+ * @param[in] tl left interval end 
+ * @param[in] tr right interval end
+ * @param[in] points number of quadrature points
+ *
+ * @retun     Integral of the function in [tl,tr].
+ */
+double Quad::GL_1D(std::function<double>(double)> func, const double tl, const double tr, const int points) const
+{
+	// pick out quadrature coordinates and weights with given quadrature points
+	auto quad_x=gl_quad_x_1D.at(points);
+	auto quad_w=gl_quad_w_1D.at(points);
+
+	std::vector<double> xrange = {-1.0,1.0}; //Regular interval [-1,1] of Gauss-Legendre quadrature
+	std::vector<double> trange= { tl, tr};   // Our integral interval
+	
+	double integral=0.0;
+
+	for (int i=0; i<points; i++){
+		integral +=quad_w[i]*func(linear_map(quad_x[i], x_range, trange));
+	}
+	integral *=(tr-tl)/2.0;  //normalization factor
+	
+	return integral;
+}
+

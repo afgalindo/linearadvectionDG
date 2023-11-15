@@ -20,6 +20,8 @@ class Quad
 		std::map<int, std::vector<double>> gl_quad_w_1D; //Key, number of quadrature. Value, weight of quadrature.
 		void read_GL_quad_1d();
 		std::vector<int> gl_quad_num; //Only limited number of quadrature points provided.
+		static double linear_map(const double x, const std::vector<double> & xrange, const std::vector<double> & trange);
+		static double linear_map(const double x, const double xl, const double xr, const double tl, const double td);
 				 		
 };
 
