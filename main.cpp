@@ -2,16 +2,18 @@
 #include <cmath>
 #include "ExactSolution.hpp"
 #include "Quad.hpp"
+#include "LegendreBasis.hpp"
 
 int main(int argc, char* argv[]){
 	
 	ExactSolution mySolution;
 	Quad myQuad;
+	LegendreBasis myBasis(3);
 	
-	double integral;
+	double lagrange;
 
-	integral=myQuad.GL_1D(mySolution.exact_1d,0.0,1.0,6);
+	lagrange=myBasis.legendre_poly(3,2.0);
 
-	std::cout<<"probando"<<integral <<"\n";
+	std::cout<<"probando"<<lagrange <<"\n";
 	return 0;
 }
