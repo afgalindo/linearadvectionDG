@@ -1,12 +1,12 @@
 #ifndef EXACTSOLUTIONDEF
 #define EXACTSOLUTIONDEF
-#include <cmath>
+#include "libs.h"
 
 class ExactSolution
 {
 	public:
 		ExactSolution(){};
 		~ExactSolution(){};
-		double exact_1d(const double x, const double t);
+		double exact_1d(const double x);
 };
 #endif

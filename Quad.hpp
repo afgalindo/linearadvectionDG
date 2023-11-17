@@ -1,8 +1,8 @@
 #ifndef QUADHEADERDEF
 #define QUADHEADERDEF
 
-#include <map>
-#include <vector>
+#include "libs.h"
+
 
 class Quad
 {
