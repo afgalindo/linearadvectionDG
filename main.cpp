@@ -1,14 +1,17 @@
 #include <iostream>
 #include <cmath>
 #include "ExactSolution.hpp"
+#include "Quad.hpp"
 
 int main(int argc, char* argv[]){
 	
 	ExactSolution mySolution;
-	double solution;
+	Quad myQuad;
+	
+	double integral;
 
-	solution=mySolution.exact_1d(0.5*M_PI);
+	integral=myQuad.GL_1D(mySolution.exact_1d,0.0,1.0,6);
 
-	std::cout<<"probando"<<solution <<"\n";
+	std::cout<<"probando"<<integral <<"\n";
 	return 0;
 }

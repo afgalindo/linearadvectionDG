@@ -1,9 +1,12 @@
 #include "Quad.hpp"
 
-Quad::Quad(const int DIM)
+Quad::Quad()
 {
-	 //Limited number of quadrautere points.
+	//Limited number of quadrautere points.
 	 gl_quad_num=std::vector<int>{1,2,3,4,5,6};
+	 	
+	//read Gauss-Legendre quadrature points and weights in 1D;
+	read_GL_quad_1D();	
 }
 
 void Quad::read_GL_quad_1D()
@@ -94,7 +97,7 @@ double Quad::linear_map(const double x, const double xl, const double xr, const 
  *
  * @retun     Integral of the function in [tl,tr].
  */
-double Quad::GL_1D(std::function<double>(double)> func, const double tl, const double tr, const int points) const
+double Quad::GL_1D(double (*func)(double), const double tl, const double tr, const int points) const
 {
 	// pick out quadrature coordinates and weights with given quadrature points
 	auto quad_x=gl_quad_x_1D.at(points);
@@ -106,7 +109,7 @@ double Quad::GL_1D(std::function<double>(double)> func, const double tl, const d
 	double integral=0.0;
 
 	for (int i=0; i<points; i++){
-		integral +=quad_w[i]*func(linear_map(quad_x[i], x_range, trange));
+		integral +=quad_w[i]*func(linear_map(quad_x[i], xrange, trange));
 	}
 	integral *=(tr-tl)/2.0;  //normalization factor
 	
